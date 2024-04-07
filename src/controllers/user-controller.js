@@ -97,7 +97,9 @@ const updateUser = async (req, res) => {
         };
 
         if (files.length !== 0) {
-            await imageKit.deleteFile(user.imageId[0]);
+            if (user.imageUrl.length !== 0 || user.imageId.length !== 0) {
+                await imageKit.deleteFile(user.imageId[0]);
+            }
 
             const { imagesUrl, imagesId } = await handleUploadImage(files);
 
@@ -148,10 +150,10 @@ const deleteUser = async (req, res) => {
         const user = await User.findByPk(id);
 
         if (!user) {
-            throw Error("Car Not Found!");
+            throw Error("User Not Found!");
         }
 
-        if (user.imageUrl != "" || user.imageId != "") {
+        if (user.imageUrl.length !== 0 || user.imageId.length !== 0) {
             await imageKit.deleteFile(user.imageId[0]);
         }
 
