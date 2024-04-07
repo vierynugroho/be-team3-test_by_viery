@@ -29,9 +29,9 @@
 | ------ | ----------------- | ------------------------------------ | ------ |
 | GET    | /api/v1/users     | mendapatkan semua data users         | [-]    |
 | GET    | /api/v1/users/:id | mendapatkan data user berdasarkan ID |        |
-| POST   | /api/v1/users     | -                                    |        |
-| PUT    | /api/v1/users/:id | -                                    |        |
-| DEL    | /api/v1/users/:id | -                                    |        |
+| POST   | /api/v1/users     | menambahkan data user                |        |
+| PUT    | /api/v1/users/:id | melakukan pembaruan data user        |        |
+| DEL    | /api/v1/users/:id | menghapus data user                  |        |
 |        |                   |                                      |        |
 
 ### Web Page
