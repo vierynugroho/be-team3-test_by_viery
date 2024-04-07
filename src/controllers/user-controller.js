@@ -152,7 +152,7 @@ const deleteUser = async (req, res) => {
         }
 
         if (user.imageUrl != "" || user.imageId != "") {
-            await imageKit.deleteFile(user.image_id[0]);
+            await imageKit.deleteFile(user.imageId[0]);
         }
 
         await User.destroy({
