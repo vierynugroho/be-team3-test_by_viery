@@ -141,6 +141,7 @@ const updateUser = async (req, res) => {
         });
     }
 };
+
 const deleteUser = async (req, res) => {
     try {
         const id = req.params.id;
@@ -165,7 +166,7 @@ const deleteUser = async (req, res) => {
             message: "delete user successfully!",
         });
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             status: false,
             message: error.message,
         });
