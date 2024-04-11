@@ -4,6 +4,8 @@ const Joi = require("joi");
 const updateUserSchema = Joi.object({
     name: Joi.string().max(60).required(),
     role: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).alphanum().required(),
     companyId: Joi.string().required(),
 });
 

@@ -1,8 +1,10 @@
-const { User } = require("../databases/models");
-const { randomUUID } = require("crypto");
+//! ----- user handler ------
+// TODO:
+// get data, update & delete users
+
 const handleUploadImage = require("../utils/handle_upload");
 const imageKit = require("../libs/imageKit");
-const { where } = require("sequelize");
+const { User } = require("../databases/models");
 
 const getUsers = async (req, res) => {
     try {
@@ -10,8 +12,8 @@ const getUsers = async (req, res) => {
 
         res.status(200).json({
             status: true,
+            totalData: users.length,
             data: users,
-            message: "User",
         });
     } catch (error) {
         res.status(500).json({
@@ -34,45 +36,6 @@ const getUser = async (req, res) => {
         });
     } catch (error) {
         res.status(404).json({
-            status: false,
-            message: error.message,
-        });
-    }
-};
-
-const createUser = async (req, res) => {
-    try {
-        const { name, companyId, role } = req.body;
-        const files = req.files;
-
-        const images = {
-            imagesUrl: [],
-            imagesId: [],
-        };
-
-        if (files) {
-            const { imagesUrl, imagesId } = await handleUploadImage(files);
-
-            images.imagesUrl = imagesUrl;
-            images.imagesId = imagesId;
-        }
-
-        const user = await User.create({
-            id: randomUUID(),
-            name,
-            companyId,
-            role,
-            imageUrl: images.imagesUrl,
-            imageId: images.imagesId,
-        });
-
-        res.status(201).json({
-            status: true,
-            message: "create user successfully!",
-            data: user,
-        });
-    } catch (error) {
-        res.status(400).json({
             status: false,
             message: error.message,
         });
@@ -110,7 +73,7 @@ const updateUser = async (req, res) => {
             images.imagesId = user.imageId;
         }
 
-        await User.update(
+        const userUpdate = await User.update(
             {
                 name,
                 companyId,
@@ -178,7 +141,6 @@ const deleteUser = async (req, res) => {
 module.exports = {
     getUsers,
     getUser,
-    createUser,
     updateUser,
     deleteUser,
 };

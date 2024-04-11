@@ -1,25 +1,17 @@
 const express = require("express");
-
-const router = express.Router();
-
+const upload = require("../middlewares/upload-middleware");
+const validatorMiddleware = require("../middlewares/validator-middleware");
 const {
     getUsers,
     getUser,
-    createUser,
     updateUser,
     deleteUser,
 } = require("../controllers/user-controller");
-const upload = require("../middlewares/upload-middleware");
-const validatorMiddleware = require("../middlewares/validator-middleware");
+
+const router = express.Router();
 
 router.get("/", getUsers);
 router.get("/:id", getUser);
-router.post(
-    "/",
-    upload.array("images"),
-    validatorMiddleware("createUser"),
-    createUser
-);
 router.put(
     "/:id",
     upload.array("images"),

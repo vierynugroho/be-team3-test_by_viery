@@ -68,3 +68,37 @@
 | --------------------------------- |
 | **Catatan**                       |
 | Mini Challenge - Stock Management |
+
+<hr>
+
+# Langkah Install
+
+-   npm install
+-   migration
+-   seeding
+-   testing
+
+# TABEL DETAIL
+
+create user data on auth_controller
+
+1. register: Company.companyId -> Create User -> Create Auth
+2.
+
+<!--! Update  -->
+
+perubahan table company dan users
+company tidak memakai users_id
+
+<!-- ? ROLE  -->
+<!-- TODO: superAdmin -->
+<!-- TODO: admin -->
+
+-   mempunyai shop ID
+-   bisa register (create user)
+-   crud stock company item
+
+<!-- TODO: user -->
+
+-   cuma bisa login
+-   read data stock
