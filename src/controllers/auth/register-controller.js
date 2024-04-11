@@ -80,10 +80,7 @@ const register = async (req, res, next) => {
             },
         });
     } catch (error) {
-        res.status(400).json({
-            status: false,
-            message: error.message,
-        });
+        next(createHttpError(500, { message: error.message }));
     }
 };
 
