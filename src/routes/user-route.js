@@ -8,6 +8,8 @@ const {
     deleteUser,
 } = require("../controllers/user-controller");
 
+const { updateUserSchema } = require("../utils/joiValidation");
+
 const router = express.Router();
 
 router.get("/", getUsers);
@@ -15,7 +17,7 @@ router.get("/:id", getUser);
 router.put(
     "/:id",
     upload.array("images"),
-    validatorMiddleware("updateUser"),
+    validatorMiddleware(updateUserSchema),
     updateUser
 );
 router.delete("/:id", deleteUser);

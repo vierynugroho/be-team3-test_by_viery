@@ -10,14 +10,15 @@ module.exports = {
             },
             companyId: {
                 type: Sequelize.STRING,
-                allowNull: false,
             },
             name: {
                 type: Sequelize.STRING,
             },
             role: {
-                type: Sequelize.ENUM("admin", "user"),
+                type: Sequelize.ENUM("superadmin", "admin", "user"),
+                allowNull: false,
             },
+
             imageUrl: {
                 type: Sequelize.ARRAY(Sequelize.TEXT),
             },

@@ -10,11 +10,9 @@ module.exports = {
             },
             companyId: {
                 type: Sequelize.STRING,
-                allowNull: false,
             },
             itemId: {
                 type: Sequelize.STRING,
-                allowNull: false,
             },
             stock: {
                 type: Sequelize.INTEGER,

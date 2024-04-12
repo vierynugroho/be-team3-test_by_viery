@@ -53,4 +53,39 @@ const login = async (req, res, next) => {
     }
 };
 
-module.exports = { login };
+const authenticate = async (req, res, next) => {
+    try {
+        const user = req.user;
+
+        if (!user)
+            return next(createHttpError(401, { message: "Unauthorized" }));
+
+        res.status(200).json({
+            status: true,
+            data: {
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    companyId: user.companyId,
+                    imageUrl: user.imageUrl,
+                    imageId: user.imageId,
+                    createdAt: user.createdAt,
+                    updatedAt: user.updatedAt,
+                },
+                auth: {
+                    id: user.Auth.id,
+                    userId: user.Auth.userId,
+                    email: user.Auth.email,
+                    password: user.Auth.password,
+                    id: user.Auth.id,
+                    createdAt: user.Auth.createdAt,
+                    updatedAt: user.Auth.updatedAt,
+                },
+            },
+        });
+    } catch (err) {
+        next(createHttpError(500, { message: err.message }));
+    }
+};
+
+module.exports = { login, authenticate };
