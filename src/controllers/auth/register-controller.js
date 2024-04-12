@@ -50,7 +50,7 @@ const register = async (req, res, next) => {
         const newUser = await User.create({
             id: randomUUID(),
             name,
-            companyId: "38e3723c-2363-4602-a282-939a2bedfe0e",
+            companyId: req.user.companyId,
             role,
             imageUrl: images.imagesUrl,
             imageId: images.imagesId,
@@ -121,12 +121,11 @@ const updateUser = async (req, res, next) => {
         const newUser = await User.create({
             id: randomUUID(),
             name,
-            companyId: "38e3723c-2363-4602-a282-939a2bedfe0e",
+            companyId: req.user.companyId,
             role,
             imageUrl: images.imagesUrl,
             imageId: images.imagesId,
         });
-
         const authUser = await Auth.create({
             id: randomUUID(),
             email,
