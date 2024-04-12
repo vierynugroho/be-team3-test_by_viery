@@ -25,14 +25,21 @@
 
 #### - Users
 
-| METHOD | End Point         | Deskripsi                            | params |
-| ------ | ----------------- | ------------------------------------ | ------ |
-| GET    | /api/v1/users     | mendapatkan semua data users         | [-]    |
-| GET    | /api/v1/users/:id | mendapatkan data user berdasarkan ID |        |
-| POST   | /api/v1/users     | menambahkan data user                |        |
-| PUT    | /api/v1/users/:id | melakukan pembaruan data user        |        |
-| DEL    | /api/v1/users/:id | menghapus data user                  |        |
-|        |                   |                                      |        |
+| METHOD | End Point         | Deskripsi                            | params | keterangan |
+| ------ | ----------------- | ------------------------------------ | ------ | ---------- |
+| GET    | /api/v1/users     | mendapatkan semua data users         | [-]    |            |
+| GET    | /api/v1/users/:id | mendapatkan data user berdasarkan ID |        |            |
+| DEL    | /api/v1/users/:id | menghapus data user                  |        |            |
+|        |                   |                                      |        |            |
+
+#### - Auth
+
+| METHOD | End Point        | Deskripsi              | params | catatan     |
+| ------ | ---------------- | ---------------------- | ------ | ----------- |
+| GET    | /api/v1/me       | mendapatkan data login | [-]    | harus login |
+| POST   | /api/v1/login    | melakukan login        |        |             |
+| POST   | /api/v1/register | melakukan register     |        | harus login |
+|        |                  |                        |        |
 
 ### Web Page
 

@@ -53,7 +53,7 @@ const login = async (req, res, next) => {
     }
 };
 
-const authenticate = async (req, res, next) => {
+const userLoggedIn = async (req, res, next) => {
     try {
         const user = req.user;
 
@@ -88,4 +88,4 @@ const authenticate = async (req, res, next) => {
     }
 };
 
-module.exports = { login, authenticate };
+module.exports = { login, userLoggedIn };
