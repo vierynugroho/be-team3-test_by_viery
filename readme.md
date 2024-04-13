@@ -29,7 +29,6 @@
 | ------ | ----------------- | ------------------------------------ | ------ | ---------- |
 | GET    | /api/v1/users     | mendapatkan semua data users         | [-]    |            |
 | GET    | /api/v1/users/:id | mendapatkan data user berdasarkan ID |        |            |
-| DEL    | /api/v1/users/:id | menghapus data user                  |        |            |
 |        |                   |                                      |        |            |
 
 #### - Auth
@@ -40,6 +39,7 @@
 | POST   | /api/v1/login       | melakukan login        |        |             |
 | POST   | /api/v1/register    | melakukan register     |        | harus login |
 | PUT    | /api/v1/profile/:id | edit data user login   |        | harus login |
+| DEL    | /api/v1/profile/:id | hapus data user        |        | harus login |
 |        |                     |                        |        |
 
 ### Web Page
@@ -86,27 +86,21 @@
 -   seeding
 -   testing
 
+<hr>
+
 # TABEL DETAIL
 
-create user data on auth_controller
+### STOCKS
 
-1. register: Company.companyId -> Create User -> Create Auth
-2.
+-   berisikan data stok item tiap perusahaan
 
-<!--! Update  -->
+### ITEMS
 
-perubahan table company dan users
-company tidak memakai users_id
+-   berisikan data item dan jumlah stok item tersedia
 
-<!-- ? ROLE  -->
-<!-- TODO: superAdmin -->
-<!-- TODO: admin -->
+### NOTES
 
--   mempunyai shop ID
--   bisa register (create user)
--   crud stock company item
-
-<!-- TODO: user -->
-
--   cuma bisa login
--   read data stock
+-   tabel stocks.stock diambil dari items.stock
+-   jika items.stock = 0, maka stocks.stock tidak dapat menambah stock
+-   perubahan data stok item pada stocks.stock tidak berpengaruh pada items.stock
+-   perubahan data items.stock terjadi jika terjadi penambahan atau pengurangan jumlah items.stock
