@@ -2,9 +2,11 @@
 // TODO:
 // get data, update & delete users
 
+const bcrypt = require("bcrypt");
+const createHttpError = require("http-errors");
 const handleUploadImage = require("../utils/handle_upload");
 const imageKit = require("../libs/imageKit");
-const { User } = require("../databases/models");
+const { User, Auth } = require("../databases/models");
 
 const getUsers = async (req, res) => {
     try {
@@ -23,97 +25,117 @@ const getUsers = async (req, res) => {
     }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
     try {
         const id = req.params.id;
 
-        const user = await User.findByPk(id);
-        if (!user) throw new Error("User Not Found!");
+        const user = await User.findOne({
+            where: {
+                id,
+            },
+            include: ["Auth"],
+        });
+
+        if (user === null) {
+            next(
+                createHttpError(404, {
+                    message: "User Not Found",
+                })
+            );
+            return;
+        }
 
         res.status(200).json({
             status: true,
             data: user,
         });
     } catch (error) {
-        res.status(404).json({
-            status: false,
-            message: error.message,
-        });
+        next(createHttpError(500, { message: error.message }));
     }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const user = await User.findByPk(id);
-
-        if (!user) {
-            throw Error("User Not Found!");
-        }
-
-        const { name, companyId, role } = req.body;
+        const { email, password, confirmPassword, name, role } = req.body;
         const files = req.files;
 
+        const userExist = await User.findOne({
+            where: {
+                id: req.params.id,
+            },
+            include: ["Auth"],
+        });
+
         const images = {
-            imagesUrl: [],
-            imagesId: [],
+            imagesUrl: userExist.imageUrl,
+            imagesId: userExist.imageId,
         };
 
+        // hashing password
+        const saltRounds = 10;
+        const hashedPassword = bcrypt.hashSync(password, saltRounds);
+        const hashedConfirmPassword = bcrypt.hashSync(
+            confirmPassword,
+            saltRounds
+        );
+
         if (files.length !== 0) {
-            if (user.imageUrl.length !== 0 || user.imageId.length !== 0) {
-                await imageKit.deleteFile(user.imageId[0]);
-            }
-
             const { imagesUrl, imagesId } = await handleUploadImage(files);
-
             images.imagesUrl = imagesUrl;
             images.imagesId = imagesId;
-        } else {
-            images.imagesUrl = user.imageUrl;
-            images.imagesId = user.imageId;
         }
 
-        const userUpdate = await User.update(
+        const userUpdated = await User.update(
             {
                 name,
-                companyId,
+                companyId: req.user.companyId,
                 role,
                 imageUrl: images.imagesUrl,
                 imageId: images.imagesId,
             },
             {
                 where: {
-                    id,
+                    id: userExist.id,
+                },
+            }
+        );
+        const authUpdated = await Auth.update(
+            {
+                email,
+                password: hashedPassword,
+                confirmPassword: hashedConfirmPassword,
+            },
+            {
+                where: {
+                    id: userExist.Auth.id,
                 },
             }
         );
 
-        res.status(200).json({
+        res.status(201).json({
             status: true,
             message: "update user successfully!",
             data: {
-                name,
-                companyId,
-                role,
-                imageUrl: images.imagesUrl,
-                imageId: images.imagesId,
+                user: {
+                    ...userUpdated,
+                },
+                auth: {
+                    ...authUpdated,
+                },
             },
         });
     } catch (error) {
-        res.status(400).json({
-            status: false,
-            message: error.message,
-        });
+        next(createHttpError(500, { message: error.message }));
     }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     try {
         const id = req.params.id;
         const user = await User.findByPk(id);
 
         if (!user) {
-            throw Error("User Not Found!");
+            next(createHttpError(404, { message: error.message }));
         }
 
         if (user.imageUrl.length !== 0 || user.imageId.length !== 0) {
@@ -131,10 +153,7 @@ const deleteUser = async (req, res) => {
             message: "delete user successfully!",
         });
     } catch (error) {
-        res.status(500).json({
-            status: false,
-            message: error.message,
-        });
+        next(createHttpError(500, { message: error.message }));
     }
 };
 

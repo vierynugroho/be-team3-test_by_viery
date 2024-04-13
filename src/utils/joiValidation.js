@@ -23,7 +23,6 @@ const updateUserSchema = Joi.object({
     confirmPassword: Joi.any().valid(Joi.ref("password")).required().messages({
         "any.only": "Confirm password does not match password",
     }),
-    companyId: Joi.string().required(),
 });
 
 module.exports = {
