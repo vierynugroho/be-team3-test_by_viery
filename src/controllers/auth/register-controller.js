@@ -86,22 +86,22 @@ const updateUser = async (req, res, next) => {
         const { email, password, confirmPassword, name, role } = req.body;
         const files = req.files;
 
-        const userExist = await Auth.findOne({
+        const userExist = await User.findOne({
             where: {
-                email,
+                id: req.params.id,
             },
+            include: ["Auth"],
         });
+
+        // console.log("=====================");
+        // console.log(userExist.imageUrl);
+        // console.log(userExist.imageId);
+        // console.log("=====================");
 
         const images = {
             imagesUrl: userExist.imageUrl,
             imagesId: userExist.imageId,
         };
-
-        if (userExist) {
-            return next(
-                createHttpError(400, { message: "User email already taken" })
-            );
-        }
 
         // hashing password
         const saltRounds = 10;
@@ -111,38 +111,48 @@ const updateUser = async (req, res, next) => {
             saltRounds
         );
 
-        if (files) {
+        if (files.length !== 0) {
             const { imagesUrl, imagesId } = await handleUploadImage(files);
-
             images.imagesUrl = imagesUrl;
             images.imagesId = imagesId;
         }
 
-        const newUser = await User.create({
-            id: randomUUID(),
-            name,
-            companyId: req.user.companyId,
-            role,
-            imageUrl: images.imagesUrl,
-            imageId: images.imagesId,
-        });
-        const authUser = await Auth.create({
-            id: randomUUID(),
-            email,
-            password: hashedPassword,
-            confirmPassword: hashedConfirmPassword,
-            userId: newUser.id,
-        });
+        const userUpdated = await User.update(
+            {
+                name,
+                companyId: req.user.companyId,
+                role,
+                imageUrl: images.imagesUrl,
+                imageId: images.imagesId,
+            },
+            {
+                where: {
+                    id: userExist.id,
+                },
+            }
+        );
+        const authUpdated = await Auth.update(
+            {
+                email,
+                password: hashedPassword,
+                confirmPassword: hashedConfirmPassword,
+            },
+            {
+                where: {
+                    id: userExist.Auth.id,
+                },
+            }
+        );
 
         res.status(201).json({
             status: true,
-            message: "create user successfully!",
+            message: "update user successfully!",
             data: {
                 user: {
-                    ...newUser,
+                    ...userUpdated,
                 },
                 auth: {
-                    ...authUser,
+                    ...authUpdated,
                 },
             },
         });

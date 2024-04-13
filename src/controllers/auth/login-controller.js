@@ -19,8 +19,6 @@ const login = async (req, res, next) => {
         });
 
         if (user && bcrypt.compareSync(password, user.password)) {
-            //   token utk autentikasi
-            console.log("===== OTENTIKASI ========");
             const token = jwt.sign(
                 {
                     id: user.userId,
@@ -41,7 +39,6 @@ const login = async (req, res, next) => {
                 _token: token,
             });
         } else {
-            console.log("===== OTENTIKASI GAGAL ========");
             next(
                 createHttpError(400, {
                     message: "Wrong Password or user not found",
