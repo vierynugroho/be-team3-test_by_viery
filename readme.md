@@ -34,12 +34,13 @@
 
 #### - Auth
 
-| METHOD | End Point        | Deskripsi              | params | catatan     |
-| ------ | ---------------- | ---------------------- | ------ | ----------- |
-| GET    | /api/v1/me       | mendapatkan data login | [-]    | harus login |
-| POST   | /api/v1/login    | melakukan login        |        |             |
-| POST   | /api/v1/register | melakukan register     |        | harus login |
-|        |                  |                        |        |
+| METHOD | End Point           | Deskripsi              | params | catatan     |
+| ------ | ------------------- | ---------------------- | ------ | ----------- |
+| GET    | /api/v1/me          | mendapatkan data login | [-]    | harus login |
+| POST   | /api/v1/login       | melakukan login        |        |             |
+| POST   | /api/v1/register    | melakukan register     |        | harus login |
+| PUT    | /api/v1/profile/:id | edit data user login   |        | harus login |
+|        |                     |                        |        |
 
 ### Web Page
 
