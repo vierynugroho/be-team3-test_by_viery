@@ -1,5 +1,4 @@
 const createHttpError = require("http-errors");
-const Validators = require("../utils/joiValidation");
 
 module.exports = (schema) => {
     return async (req, res, next) => {

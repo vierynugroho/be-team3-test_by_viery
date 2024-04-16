@@ -1,6 +1,6 @@
 const createHttpError = require("http-errors");
 const jwt = require("jsonwebtoken");
-const { User, Auth } = require("../databases/models");
+const { User } = require("../databases/models");
 
 module.exports = async (req, res, next) => {
     try {

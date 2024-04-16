@@ -53,7 +53,6 @@ const login = async (req, res, next) => {
 const userLoggedIn = async (req, res, next) => {
     try {
         const user = req.user;
-
         if (!user)
             return next(createHttpError(401, { message: "Unauthorized" }));
 

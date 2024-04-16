@@ -37,14 +37,14 @@ router.post(
 
 //TODO: user
 router.put(
-    "/profile/:id",
+    "/profile",
     Authenticate,
     upload.array("images"),
     validatorMiddleware(updateUserSchema),
     updateUser
 );
 
-router.delete("/profile/:id", Authenticate, deleteUser);
+router.delete("/profile", Authenticate, deleteUser);
 
 router.get("/me", Authenticate, userLoggedIn);
 router.post("/login", validatorMiddleware(loginSchema), login);
