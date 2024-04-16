@@ -8,7 +8,8 @@
         "db:migrate": "npx sequelize-cli db:migrate",
         "db:undo-migrate": "npx sequelize-cli db:migrate:undo",
         "db:undo-all-migrate": "npx sequelize-cli db:migrate:undo:all",
-        "db:seed": "npx sequelize-cli db:seed:all"
+        "db:seed": "npx sequelize-cli db:seed:all",
+        "db:undo-all-seed": "npx sequelize-cli db:seed:undo:all"
     },
     "author": "Viery Nugroho",
     "license": "ISC",

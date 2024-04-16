@@ -38,37 +38,42 @@ module.exports = {
         );
 
         const randomRoles = ["superadmin", "admin", "user"];
-        const randomNames = ["superss", "mimin", "manusiaBiasa"];
 
-        const users_data = companies.map((company) => ({
-            id: randomUUID(),
-            companyId: company.id,
-            name: randomNames[Math.floor(Math.random() * randomNames.length)],
-            role: randomRoles[Math.floor(Math.random() * randomRoles.length)],
-            imageUrl: "{}",
-            imageId: "{}",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        }));
+        const users_data = companies.map((company) => {
+            randomRoles.forEach((role) => ({
+                id: randomUUID(),
+                companyId: company.id,
+                name: role,
+                role: role,
+                imageUrl: "{}",
+                imageId: "{}",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }));
+        });
 
         const users = await queryInterface.bulkInsert("Users", users_data, {
             returning: true,
         });
 
-        const auth_data = users.map((user) => ({
-            id: randomUUID(),
-            userId: user.id,
-            email: `${user.name}@mail.com`,
-            password: hashedPassword,
-            confirmPassword: hashedConfirmPassword,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        }));
+        const auth_data = users.map((user) => {
+            return {
+                id: randomUUID(),
+                userId: user.id,
+                email: `${user.name}@mail.com`,
+                password: hashedPassword,
+                confirmPassword: hashedConfirmPassword,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            };
+        });
 
         return queryInterface.bulkInsert("Auths", auth_data);
     },
 
     async down(queryInterface, Sequelize) {
-        return queryInterface.bulkDelete("Companies", null, {});
+        await queryInterface.bulkDelete("Companies", null, { returning: true });
+        await queryInterface.bulkDelete("Users", null, { returning: true });
+        await queryInterface.bulkDelete("Auths", null, { returning: true });
     },
 };

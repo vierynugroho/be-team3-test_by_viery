@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
             });
 
-            Item.belongsTo(models.Stock, {
+            Item.hasMany(models.Stock, {
                 foreignKey: {
                     name: "itemId",
                 },

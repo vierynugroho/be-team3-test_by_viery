@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
             });
 
-            Company.belongsTo(models.Stock, {
+            Company.hasMany(models.Stock, {
                 foreignKey: {
                     name: "companyId",
                 },
