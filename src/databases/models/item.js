@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Item.belongsTo(models.User, {
+            Item.hasMany(models.Stock, {
                 foreignKey: {
-                    name: "userId",
+                    name: "itemId",
                 },
             });
 
@@ -20,14 +20,9 @@ module.exports = (sequelize, DataTypes) => {
                     name: "categoryId",
                 },
             });
-
-            Item.hasMany(models.Stock, {
-                foreignKey: {
-                    name: "itemId",
-                },
-            });
         }
     }
+
     Item.init(
         {
             categoryId: DataTypes.STRING,

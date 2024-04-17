@@ -37,19 +37,22 @@ module.exports = {
             saltRounds
         );
 
-        const randomRoles = ["superadmin", "admin", "user"];
+        const roles = ["superadmin", "admin", "user"];
 
-        const users_data = companies.map((company) => {
-            randomRoles.forEach((role) => ({
+        let users_data;
+        companies.map((company) => {
+            const users = roles.map((role) => ({
                 id: randomUUID(),
                 companyId: company.id,
-                name: role,
+                name: `si ${role}`,
                 role: role,
                 imageUrl: "{}",
                 imageId: "{}",
                 createdAt: new Date(),
                 updatedAt: new Date(),
             }));
+
+            return (users_data = users);
         });
 
         const users = await queryInterface.bulkInsert("Users", users_data, {
@@ -60,7 +63,7 @@ module.exports = {
             return {
                 id: randomUUID(),
                 userId: user.id,
-                email: `${user.name}@mail.com`,
+                email: `${user.role}@mail.com`,
                 password: hashedPassword,
                 confirmPassword: hashedConfirmPassword,
                 createdAt: new Date(),

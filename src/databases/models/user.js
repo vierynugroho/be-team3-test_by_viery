@@ -15,12 +15,6 @@ module.exports = (sequelize, DataTypes) => {
                 },
             });
 
-            User.hasMany(models.Item, {
-                foreignKey: {
-                    name: "userId",
-                },
-            });
-
             User.belongsTo(models.Company, {
                 foreignKey: {
                     name: "companyId",
