@@ -6,13 +6,14 @@
 // create user & auth
 const bcrypt = require("bcrypt");
 const createHttpError = require("http-errors");
-const { User, Auth } = require("../../databases/models");
+const { User, Auth, sequelize } = require("../../databases/models");
 const { randomUUID } = require("crypto");
 const handleUploadImage = require("../../utils/handle_upload");
 
 const register = async (req, res, next) => {
     try {
         const { email, password, confirmPassword, name, role } = req.body;
+
         const files = req.files;
 
         const images = {
@@ -47,35 +48,49 @@ const register = async (req, res, next) => {
             images.imagesId = imagesId;
         }
 
-        const newUser = await User.create({
-            id: randomUUID(),
-            name,
-            companyId: req.user.companyId,
-            role,
-            imageUrl: images.imagesUrl,
-            imageId: images.imagesId,
-        });
-
-        const authUser = await Auth.create({
-            id: randomUUID(),
-            email,
-            password: hashedPassword,
-            confirmPassword: hashedConfirmPassword,
-            userId: newUser.id,
-        });
-
-        res.status(201).json({
-            status: true,
-            message: "create user successfully!",
-            data: {
-                user: {
-                    ...newUser,
+        const transaction = await sequelize.transaction();
+        try {
+            const newUser = await User.create(
+                {
+                    id: randomUUID(),
+                    name,
+                    companyId: req.user.companyId,
+                    role,
+                    imageUrl: images.imagesUrl,
+                    imageId: images.imagesId,
                 },
-                auth: {
-                    ...authUser,
+                { transaction }
+            );
+
+            const authUser = await Auth.create(
+                {
+                    id: randomUUID(),
+                    email,
+                    password: hashedPassword,
+                    confirmPassword: hashedConfirmPassword,
+                    userId: newUser.id,
                 },
-            },
-        });
+                { transaction }
+            );
+
+            await transaction.commit();
+
+            res.status(201).json({
+                status: true,
+                message: "create user successfully!",
+                data: {
+                    user: {
+                        ...newUser,
+                    },
+                    auth: {
+                        ...authUser,
+                    },
+                },
+            });
+        } catch (error) {
+            await transaction.rollback();
+            next(createHttpError(500, { message: error.message }));
+        }
     } catch (error) {
         next(createHttpError(500, { message: error.message }));
     }

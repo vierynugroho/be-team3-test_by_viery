@@ -6,6 +6,7 @@ const router = require("./routes");
 const session = require("express-session");
 const flash = require("connect-flash");
 const createHttpError = require("http-errors");
+const cookieParser = require("cookie-parser");
 
 //! config
 const app = express();
@@ -21,6 +22,7 @@ app.set("views", __dirname + "/views");
 app.use(cors());
 app.use(express.json());
 app.use(logger("dev"));
+app.use(cookieParser());
 app.use(
     session({
         secret: process.env.SECRET_COOKIE,

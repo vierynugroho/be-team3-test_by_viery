@@ -33,6 +33,14 @@ const login = async (req, res, next) => {
                 }
             );
 
+            res.cookie("_token", token, {
+                httpOnly: true,
+                maxAge: 24 * 60 * 60 * 100,
+            });
+
+            // res.render("dashboard", {
+            //     _token: req.cookies._token,
+            // });
             res.status(200).json({
                 status: true,
                 message: "Login Success",

@@ -9,9 +9,10 @@ const validatorMiddleware = require("../middlewares/validator-middleware");
 const Authenticate = require("../middlewares/auth-middleware");
 const CheckRole = require("../middlewares/role-middleware");
 const {
-    registerSchema,
     loginSchema,
     updateUserSchema,
+    registerAdminSchema,
+    registerSuperAdminSchema,
 } = require("../utils/joiValidation");
 const { updateUser, deleteUser } = require("../controllers/user-controller");
 
@@ -22,16 +23,17 @@ router.post(
     Authenticate,
     CheckRole(["superadmin"]),
     upload.array("images"),
-    validatorMiddleware(registerSchema),
+    validatorMiddleware(registerSuperAdminSchema),
     register
 );
+
 //TODO: admin
 router.post(
     "/register",
     Authenticate,
     CheckRole(["admin", "superadmin"]),
     upload.array("images"),
-    validatorMiddleware(registerSchema),
+    validatorMiddleware(registerAdminSchema),
     register
 );
 
