@@ -106,22 +106,26 @@
 -   perubahan data items.stock terjadi jika terjadi penambahan atau pengurangan jumlah items.stock
 
 
-# Rincian Roles
+# Rincian
 - superadmin = BOS Besar (pemilik semua produk dan stok)
 - admin = pemilik company (yang mempunyai produk dan stok dari BOS Besar)
 - member = anggota company (pemilik usaha yang menjual produk dan stok)
 
 
-semua role harus login untuk akses web kecuali halaman login
+## 💀 DANGER 
+### semua role harus login untuk akses web kecuali halaman login
+
+## register
 - superadmin: register [superuser,admin]
 - admin: register [member]
 
+## peran tiap role
 - superadmin: mengelola semua produk dan stock produk (bukan tiap company)
 - admin: mengelola stock produk baik menambah atau mengurangi stok produk (tiap company)
 - member: melihat stok produk (tiap company member)
 
-halaman Web
-- [superadmin]
+## halaman Web
+[superadmin]
 -     berisikan tampilan card company
 -     CRUD company
 -     berisikan tampilan tabel list produk berserta stock (with pagination)
@@ -129,10 +133,10 @@ halaman Web
 -     berisikan tampilan tabel list users
 -     CRUD users pada action tabel list users
 
-- [admin]
+[admin]
 -     berisikan tampilan list produk dan stock (with pagination) tiap company
 -     CRUD produk dan stock yang terdapat dalam list produk
 
-- [member]
+[member]
 -     berisikan tampilan list produk dan stock per company member
 -     RU produk dan stock (tambah dan kurangi stock produk (mengambil produk))
