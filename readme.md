@@ -107,7 +107,7 @@
 
 
 # Rincian
-- superadmin = BOS Besar (pemilik semua produk dan stok)
+- superadmin = BOS Besar (pemilik semua produk dan stok) - {tidak mempunyai companyId}
 - admin = pemilik company (yang mempunyai produk dan stok dari BOS Besar)
 - member = anggota company (pemilik usaha yang menjual produk dan stok)
 
@@ -120,9 +120,16 @@
 - admin: register [member]
 
 ## peran tiap role
-- superadmin: mengelola semua produk dan stock produk (bukan tiap company)
-- admin: mengelola stock produk baik menambah atau mengurangi stok produk (tiap company)
-- member: melihat stok produk (tiap company member)
+superadmin
+- mengelola semua produk dan stok produk untuk semua perusahaan
+- mengelola kategori produk
+- mengelola daftar user dan admin
+
+admin
+- mengelola stok produk tiap perusahaan (menambah dan mengurangi produk dan stok produk)
+
+member
+- mengambil stok produk berdasarkan induk perusahaan (menambah atau mengurangi) - (sebagai sebuah mitra kerja atau bisnis cabang dari admin)
 
 ## halaman Web
 [superadmin]
